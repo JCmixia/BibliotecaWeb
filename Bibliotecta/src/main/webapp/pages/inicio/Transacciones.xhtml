@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Transacciones</title>
+        <!-- <h:outputScript name="script.js" library="js"/>
+         <h:outputStylesheet name="default.css" library="css"/> 
+         <h:outputStylesheet name="theme.css" library="css"/>
+        -->
+    </h:head>
+
+    <h:body>
+        <style>
+            body .ui-panelgrid  .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 0rem;
+            }
+        </style>
+        <h1> <p:outputLabel value="Clientes"    class="contenedorFormulario"/></h1>
+        <br></br>
+        <div class="contenedorFormulario">
+            <h:form id="form1">
+                <p:panelGrid columns="2">   
+                    <p:outputLabel value="Usuario"/>
+                    <p:inputText id="txtUsuario" value="#{bkn_Inicio.id_usuario}"/>
+                    <p:outputLabel value="Libro"/>
+                    <p:inputText id="txtLibro" value="#{bkn_Inicio.libro_id}"/>
+                    <p:outputLabel value="Transaccion"/>
+                    <p:inputText id="txtTransaccion" value="#{bkn_Inicio.tipo_transaccion}"/>
+                    <p:outputLabel value="Fecha prestamo" />
+                    <p:inputText id="txtFechaPresta" value="#{bkn_Inicio.fecha_prestamo}"/>
+                    <p:outputLabel value="Fecha devolucion"/>
+                    <p:inputText id="txtFechaDevolucion"  value="#{bkn_Inicio.fecha_devolucion}"/>
+                    <p:commandButton id="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarTransaccion}" update="form1, tabla1"/>
+                    <p:commandButton id="btnActualizar" value="Modificar"/>
+                    <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+                </p:panelGrid>
+            </h:form>
+        </div>
+        <p:dataTable id="tabla1" var="item" value="#{bkn_Inicio.transacciones}">
+            <p:column headerText="Id">
+                <h:outputText value="#{item.id_transaccion}" />
+            </p:column>
+            <p:column headerText="Estudiante">
+                <h:outputText value="#{item.id_usuario}"/>
+            </p:column>
+            <p:column headerText="Libro">
+                <h:outputText value="#{item.id_libro}"/>
+            </p:column>
+            <p:column headerText="Tipo transaccion">
+                 <h:outputText value="#{item.tipo_transaccion}"/>
+            </p:column>
+            <p:column headerText="Fecha prestamo">
+                <h:outputText value="#{item.fecha_prestamo}" />
+            </p:column>
+            <p:column headerText="Fecha devolucion">
+                <h:outputText value="#{item.fecha_devolucion}" />
+            </p:column>
+        </p:dataTable>
+    </h:body>
+</html>

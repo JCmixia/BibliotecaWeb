@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Autores</title>
+        <!-- <h:outputScript name="script.js" library="js"/>
+         <h:outputStylesheet name="default.css" library="css"/> 
+         <h:outputStylesheet name="theme.css" library="css"/>
+        -->
+    </h:head>
+
+    <h:body>
+        <style>
+            body .ui-panelgrid  .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 0rem;
+            }
+        </style>
+        <h1> <p:outputLabel value="Autores"    class="contenedorFormulario"/></h1>
+        <br></br>
+        <div class="contenedorFormulario">
+            <h:form id="form1">
+                <p:panelGrid columns="2">   
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText id="txtNombre" value="#{bkn_Inicio.nombre_autor}"/>
+                    <p:commandButton id="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarAutor}" update="form1, tabla1"/>
+                    <p:commandButton id="btnActualizar" value="Modificar"/>
+                    <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+                </p:panelGrid>
+            </h:form>
+        </div>
+        <p:dataTable id="tabla1" var="item" value="#{bkn_Inicio.autores}">
+            <p:column headerText="Id">
+                <h:outputText value="#{item.id_autor}" />
+            </p:column>
+            <p:column headerText="Nombre">
+                <h:outputText value="#{item.nombre_autor}" />
+            </p:column> 
+        </p:dataTable>
+    </h:body>
+</html>

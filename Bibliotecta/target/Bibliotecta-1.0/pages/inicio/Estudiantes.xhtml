@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Estudiantes</title>
+        <!-- <h:outputScript name="script.js" library="js"/>
+         <h:outputStylesheet name="default.css" library="css"/> 
+         <h:outputStylesheet name="theme.css" library="css"/>
+        -->
+    </h:head>
+
+    <h:body>
+        <style>
+            body{
+                margin: 0;
+                background: #F5FCCD;
+                background-repeat: no-repeat;
+
+            }
+            body .ui-inputfield {
+                border: none;
+                border-bottom: solid black 2px;
+                width: 500px;
+                border-radius: 0;
+            }
+            .agregarEstudiante{
+                display : none;
+                text-align: -webkit-center;
+                width: 90%;
+                border: solid #495057 1px;
+            }
+            .mostrarEstudiante{
+                display : block;
+            }
+            body .ui-panelgrid  .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 0rem;
+            }
+            .ui-button-text{
+                background-color: #256D85;
+                border: solid #fff 1px;
+            }
+            .ui-button-text:hover{
+                background-color: #2B4865;
+            }
+            body .ui-widget {
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                font-size: 1rem;
+                text-decoration: none;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            user agent stylesheet
+            label {
+                cursor: default;
+            }
+            body .ui-panelgrid .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 1rem;
+            }
+            .value {
+                font-weight: bold;
+            }
+            div.color{
+                background-color: #002B5B;
+                height: 40px;
+            }
+            .botones{
+                background-color: #256D85;
+                color: white;
+                height: 40px;
+                margin: 0;
+                border: solid black 2px;
+                text-align: center;
+            }
+            .botones:hover{
+                background-color: #2B4865;
+                color: white;
+            }
+            .contenedorFormulario{
+                text-align: center;
+            }
+            .centrarInicio{
+                text-align: -webkit-center;     
+            }
+        </style>
+        <script>
+            function mostrarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "block";
+            }
+
+            function ocultarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "none";
+            }
+
+            function mostrarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "block";
+            }
+
+            function ocultarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "none";
+            }
+        </script>
+
+        <div class="color">
+            <p:commandButton id="btnEstudiantes" value="Agregar Estudiante" onclick="mostrarTbl(), ocultarFrm()"/>
+            <p:commandButton id="btnAgregar" value="Agregar Estudiante" onclick="mostrarFrm(), ocultarTbl()"/>
+            <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+        </div>
+        <div class="centrarInicio">
+            <br></br>
+            <div id="formulario" class="agregarEstudiante">
+                <h1 class="contenedorFormulario" > <p:outputLabel value="REGISTRAR NUEVO ESTUDIANTE" class="contenedorFormulario"/></h1>
+                <h:form >
+                    <p:panelGrid style="width: 800px" columns="2">   
+                        <p:outputLabel value="Identificacion"/>
+                        <p:inputText id="txtIdentificacion" value="#{bkn_Inicio.identificacion}"/>
+                        <p:outputLabel value="Nombre"/>
+                        <p:inputText id="txtNombre" value="#{bkn_Inicio.nombre_estudiante}"/>
+                        <p:outputLabel value="Correo"/>
+                        <p:inputText id="txtCorreo" value="#{bkn_Inicio.correo}"/>
+                        <p:outputLabel value="Telefono"/>
+                        <p:inputText id="txtTelefono" value="#{bkn_Inicio.telefono}"/>
+                        <p:outputLabel value="Direccion"/>
+                        <p:inputText id="txtDireccion" value="#{bkn_Inicio.direccion}"/>
+                    </p:panelGrid>   
+                    <div>
+                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" />
+                    </div>
+                </h:form>
+            </div>
+            <div id="tabla" class="mostraEstudiante">
+                <h1  class="contenedorFormulario"> <p:outputLabel value="Estudiantes" /></h1>
+
+                <p:dataTable var="item" value="#{bkn_Inicio.estudiantes}">
+                    <p:column headerText="Id">
+                        <h:outputText value="#{item.id_estudiante}" />
+                    </p:column>
+                    <p:column headerText="Identificacion">
+                        <h:outputText value="#{item.identificacion}" />
+                    </p:column>
+                    <p:column headerText="Direccion">
+                        <h:outputText value="#{item.direccion}" />
+                    </p:column>
+
+                    <p:column headerText="Correo">
+                        <h:outputText value="#{item.correo}" />
+                    </p:column>
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{item.telefono}" />
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{item.estado}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </h:body>
+</html>

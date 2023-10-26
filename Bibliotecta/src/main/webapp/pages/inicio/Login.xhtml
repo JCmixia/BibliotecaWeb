@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <style>
+            body{
+                background-image: url(../../resources/img/font-login.jpg); /* Reemplaza 'ruta/a/imagen.jpg' con la ruta de tu i magen de fondo */
+                background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+                background-repeat: no-repeat; /* Evita que la imagen se repita */
+            }
+
+            .form-container {
+                color: #fff;
+                padding: 60px;
+                border-radius: 30px;
+                background-color: rgba(50,64,77,.90);
+                position: absolute;
+                top: 35%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-transform: uppercase;
+            }
+
+            div.centrar{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            }
+
+        </style>
+        <div class="form-container">
+            <h:form id="form1">
+                <h5 class="mt-0">Inicia sesión con tu cuenta</h5>
+                <div class="field grid">
+                    <p:outputLabel  value="Username"/>
+                    <div>
+                        <p:inputText id="float-input" value="#{bkn_Inicio.nombre_usuario}"/>
+                    </div>
+                    <p:outputLabel for="pwd1" styleClass="col-fixed" style="width:100px" value="Password"/>
+                    <div class="col">
+                        <p:password id="pwd1" value="#{bkn_Inicio.password}" toggleMask="true"/>
+                    </div>
+                    <div class="centrar">        
+                        <p:commandButton id="btnIngresar" value="Ingresar" action="#{bkn_Inicio.validarUsuario()}" update="form1, rpt"/>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+   
+        <p:outputLabel id="rpt" value="#{bkn_Inicio.respuesta}" />
+        
+    </body>
+</html>
