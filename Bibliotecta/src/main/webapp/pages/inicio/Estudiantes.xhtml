@@ -119,7 +119,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         </script>
 
         <div class="color">
-            <p:commandButton id="btnEstudiantes" value="Agregar Estudiante" onclick="mostrarTbl(), ocultarFrm()"/>
+            <p:commandButton id="btnEstudiantes" value="Mostrar Estudiantes" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt"/>
             <p:commandButton id="btnAgregar" value="Agregar Estudiante" onclick="mostrarFrm(), ocultarTbl()"/>
             <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
         </div>
@@ -127,7 +127,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
             <br></br>
             <div id="formulario" class="agregarEstudiante">
                 <h1 class="contenedorFormulario" > <p:outputLabel value="REGISTRAR NUEVO ESTUDIANTE" class="contenedorFormulario"/></h1>
-                <h:form >
+                <h:form id="frmDatos">
                     <p:panelGrid style="width: 800px" columns="2">   
                         <p:outputLabel value="Identificacion"/>
                         <p:inputText id="txtIdentificacion" value="#{bkn_Inicio.identificacion}"/>
@@ -141,14 +141,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         <p:inputText id="txtDireccion" value="#{bkn_Inicio.direccion}"/>
                     </p:panelGrid>   
                     <div>
-                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" />
+                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" update="tblDatos, frmDatos, txtRpt"/>
                     </div>
                 </h:form>
+                <h:outputText id="txtRpt" value="#{bkn_Inicio.respuesta}"/>
             </div>
             <div id="tabla" class="mostraEstudiante">
                 <h1  class="contenedorFormulario"> <p:outputLabel value="Estudiantes" /></h1>
 
-                <p:dataTable var="item" value="#{bkn_Inicio.estudiantes}">
+                <p:dataTable id="tblDatos" var="item" value="#{bkn_Inicio.estudiantes}">
                     <p:column headerText="Id">
                         <h:outputText value="#{item.id_estudiante}" />
                     </p:column>

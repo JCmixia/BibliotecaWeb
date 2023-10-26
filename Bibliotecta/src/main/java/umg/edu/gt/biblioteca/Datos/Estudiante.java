@@ -28,6 +28,17 @@ public class Estudiante implements Serializable {
     private Long id_municipio;
     private String estado;
 
+    public Estudiante(Long id_estudiante, String identificacion, String nombre_estudiante, String correo, String telefono, String direccion, Long id_municipio, String estado) {
+        this.id_estudiante = id_estudiante;
+        this.identificacion = identificacion;
+        this.nombre_estudiante = nombre_estudiante;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.id_municipio = id_municipio;
+        this.estado = estado;
+    }
+
     public Estudiante(String identificacion, String nombre_estudiante, String correo, String telefono, String direccion, Long id_municipio, String estado) {
         this.identificacion = identificacion;
         this.nombre_estudiante = nombre_estudiante;

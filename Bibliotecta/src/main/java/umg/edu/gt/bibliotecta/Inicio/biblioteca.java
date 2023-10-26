@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.RowEditEvent;
 import umg.edu.gt.biblioteca.Datos.Autor;
 import umg.edu.gt.biblioteca.Datos.Estudiante;
 import umg.edu.gt.biblioteca.Datos.Libro;
@@ -42,6 +43,48 @@ import umg.edu.gt.biblioteca.Datos.Estudiante;
 @ManagedBean(name = "bkn_Inicio")
 @ViewScoped
 public class biblioteca {
+
+    /**
+     * @return the id_tipo_cat
+     */
+    public Long getId_tipo_cat() {
+        return id_tipo_cat;
+    }
+
+    /**
+     * @param id_tipo_cat the id_tipo_cat to set
+     */
+    public void setId_tipo_cat(Long id_tipo_cat) {
+        this.id_tipo_cat = id_tipo_cat;
+    }
+
+    /**
+     * @return the descripcion_cat
+     */
+    public String getDescripcion_cat() {
+        return descripcion_cat;
+    }
+
+    /**
+     * @param descripcion_cat the descripcion_cat to set
+     */
+    public void setDescripcion_cat(String descripcion_cat) {
+        this.descripcion_cat = descripcion_cat;
+    }
+
+    /**
+     * @return the estudiantes2
+     */
+    public List<Estudiante> getEstudiantes2() {
+        return estudiantes2;
+    }
+
+    /**
+     * @param estudiantes2 the estudiantes2 to set
+     */
+    public void setEstudiantes2(List<Estudiante> estudiantes2) {
+        this.estudiantes2 = estudiantes2;
+    }
 
     /**
      * @return the respuesta
@@ -73,6 +116,8 @@ public class biblioteca {
     private String direccion;
     private Long id_municipio;
     private String estadoEstudiante;
+
+    private List<Estudiante> estudiantes2 = new ArrayList<Estudiante>();
 
     //datos libro
     private Long id_libro;
@@ -110,6 +155,10 @@ public class biblioteca {
     //private String tipo_usuario;
     //private String libros_prestados;
     private String respuesta;
+
+    //datos categoria
+    private Long id_tipo_cat;
+    private String descripcion_cat;
 
     // Crear una instancia de ArrayList
     private List<String> estados = new ArrayList<>();
@@ -196,37 +245,65 @@ public class biblioteca {
 
     public void agregarEstudiante() throws IOException, InterruptedException {
 
-        Estudiante estudiante = new Estudiante(identificacion, nombre_estudiante, correo, telefono, direccion, id_municipio, "Activo");
-        String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarEstudiante";
+        if (identificacion != null && !nombre_estudiante.isEmpty() && !correo.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty()){
+            id_municipio = Long.parseLong("1");
+            Estudiante estudiante = new Estudiante(identificacion, nombre_estudiante, correo, telefono, direccion, id_municipio, "Activo");
+            String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarEstudiante";
 
-        HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = HttpClient.newHttpClient();
 
-        Gson gson = new Gson();
-        String json = gson.toJson(estudiante);
-        System.out.println(json);
+            Gson gson = new Gson();
+            String json = gson.toJson(estudiante);
+            System.out.println(json);
 
-        // Crear una solicitud POST con parámetros
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
+            // Crear una solicitud POST con parámetros
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
 
-        // Enviar la solicitud y obtener la respuesta
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        // Imprimir el cuerpo de la respuesta
-        System.out.println("respuesta: " + response.body());
+            // Enviar la solicitud y obtener la respuesta
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            // Imprimir el cuerpo de la respuesta
+            System.out.println("respuesta: " + response.body());
 
-        listarEstudiantes();
+            respuesta = response.body();
+            // respuesta = "Estudiante agregado";
+            listarEstudiantes();
 
-        setId_estudiante(null);
-        setIdentificacion(" ");
-        setNombre_estudiante(" ");
-        setTelefono(" ");
-        setDireccion(" ");
-        setId_municipio(null);
-        setEstadoEstudiante(" ");
+            setId_estudiante(null);
+            setIdentificacion(" ");
+            setNombre_estudiante(" ");
+            setTelefono(" ");
+            setDireccion(" ");
+            setId_municipio(null);
+            setEstadoEstudiante(" ");
+            setCorreo(" ");
 
+        }else{
+            respuesta = "Por favor llene todos los campos";
+        }
+        
+    }
+
+    public void editarEstudiante(RowEditEvent event) {
+
+        Estudiante estudiante = (Estudiante) event.getObject();
+
+        id_estudiante = estudiante.getId_estudiante();
+        identificacion = estudiante.getIdentificacion();
+        nombre_estudiante = estudiante.getNombre_estudiante();
+        telefono = estudiante.getTelefono();
+        correo = estudiante.getCorreo();
+        direccion = estudiante.getDireccion();
+        estadoEstudiante = estudiante.getEstado();
+
+        try {
+            actualizarEstudiante();
+        } catch (Exception e) {
+            System.out.println("Error al editarEstudiante");
+        }
     }
 
     public void listarLibros() throws IOException, InterruptedException {
@@ -511,6 +588,106 @@ public class biblioteca {
             }
         }
         return false;
+    }
+
+    /////////metodos Actualizar ////////////
+    public void actualizarEstudiante() throws IOException, InterruptedException {
+        Estudiante autor = new Estudiante(id_estudiante, identificacion, nombre_estudiante, correo, telefono, direccion, id_municipio, estadoEstudiante);
+
+        String url = "http://localhost:8080/actualizar/webresources/actualizar/actualizarEstudiante";
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(autor);
+
+        System.out.println(json);
+
+        // Crear una solicitud PUT con parámetros
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        // Enviar la solicitud y obtener la respuesta
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        listarAutores();
+
+        System.out.println("respuesta: " + response.body());
+
+        setId_autor(null);
+        setNombre_autor(" ");
+    }
+
+    public void actualizarAutor() throws IOException, InterruptedException {
+        Autor autor = new Autor();
+        autor.setId_autor(id_autor);
+        autor.setNombre_autor(nombre_autor);
+
+        String url = "http://localhost:8090/actualizar/webresources/actualizar/actualizarAutor";
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(autor);
+
+        System.out.println(json);
+
+        // Crear una solicitud PUT con parámetros
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        // Enviar la solicitud y obtener la respuesta
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        listarAutores();
+
+        System.out.println("respuesta: " + response.body());
+
+        setId_autor(null);
+        setNombre_autor(" ");
+    }
+
+    public void actualizarCategorias() throws IOException, InterruptedException {
+        Categoria categoria = new Categoria();
+        categoria.setId_tipo(getId_tipo_cat());
+        categoria.setDescripcion(getDescripcion_cat());
+
+        String url = "http://localhost:8090/actualizar/webresources/actualizar/actualizarCategoria";
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(categoria);
+
+        System.out.println(json);
+
+        // Crear una solicitud PUT con parámetros
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        // Enviar la solicitud y obtener la respuesta
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        listarCategorias();
+
+        System.out.println("respuesta: " + response.body());
+
+        setId_tipo_cat(null);
+        setDescripcion_cat("");
+    }
+
+    public void limpiarDatos() {
+
+        respuesta = "";
     }
 
     /**

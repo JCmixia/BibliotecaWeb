@@ -24,7 +24,7 @@ public class Categoria implements Serializable {
     private Long id_tipo;
     private String descripcion;
 
-    public Categoria(String descripcion) {
+    public Categoria(String descripcion){
         this.descripcion = descripcion;
     }
 

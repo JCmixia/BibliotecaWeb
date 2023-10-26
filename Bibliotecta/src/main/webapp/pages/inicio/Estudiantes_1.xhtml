@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Estudiantes</title>
+        <!-- <h:outputScript name="script.js" library="js"/>
+         <h:outputStylesheet name="default.css" library="css"/> 
+         <h:outputStylesheet name="theme.css" library="css"/>
+        -->
+    </h:head>
+
+    <h:body>
+        <style>
+            body{
+                margin: 0;
+                background: #F5FCCD;
+                background-repeat: no-repeat;
+
+            }
+            body .ui-inputfield {
+                border: none;
+                border-bottom: solid black 2px;
+                width: 500px;
+                border-radius: 0;
+            }
+            .agregarEstudiante{
+                display : none;
+                text-align: -webkit-center;
+                width: 90%;
+                border: solid #495057 1px;
+            }
+            .mostrarEstudiante{
+                display : block;
+            }
+            body .ui-panelgrid  .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 0rem;
+            }
+            .ui-button-text{
+                background-color: #256D85;
+                border: solid #fff 1px;
+            }
+            .ui-button-text:hover{
+                background-color: #2B4865;
+            }
+            body .ui-widget {
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                font-size: 1rem;
+                text-decoration: none;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            user agent stylesheet
+            label {
+                cursor: default;
+            }
+            body .ui-panelgrid .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 1rem;
+            }
+            .value {
+                font-weight: bold;
+            }
+            div.color{
+                background-color: #002B5B;
+                height: 40px;
+            }
+            .botones{
+                background-color: #256D85;
+                color: white;
+                height: 40px;
+                margin: 0;
+                border: solid black 2px;
+                text-align: center;
+            }
+            .botones:hover{
+                background-color: #2B4865;
+                color: white;
+            }
+            .contenedorFormulario{
+                text-align: center;
+            }
+            .centrarInicio{
+                text-align: -webkit-center;
+            }
+        </style>
+        <script>
+            function mostrarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "block";
+            }
+
+            function ocultarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "none";
+            }
+
+            function mostrarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "block";
+            }
+
+            function ocultarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "none";
+            }
+
+            function showManageProductDialog() {
+                PF('manageProductDialog').show();
+            }
+        </script>
+
+        <div class="color">
+            <p:commandButton id="btnEstudiantes" value="Mostrar Estudiantes" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt, form2"/>
+            <p:commandButton id="btnAgregar" value="Agregar Estudiante" onclick="mostrarFrm(), ocultarTbl()"/>
+            <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+        </div>
+        <div class="centrarInicio">
+            <br></br>
+            <div id="formulario" class="agregarEstudiante">
+                <h1 class="contenedorFormulario" > <p:outputLabel value="REGISTRAR NUEVO ESTUDIANTE" class="contenedorFormulario"/></h1>
+                <h:form id="frmDatos">
+                    <p:panelGrid style="width: 800px" columns="2">   
+                        <p:outputLabel value="Identificacion"/>
+                        <p:inputText id="txtIdentificacion" value="#{bkn_Inicio.identificacion}"/>
+                        <p:outputLabel value="Nombre"/>
+                        <p:inputText id="txtNombre" value="#{bkn_Inicio.nombre_estudiante}"/>
+                        <p:outputLabel value="Correo"/>
+                        <p:inputText id="txtCorreo" value="#{bkn_Inicio.correo}"/>
+                        <p:outputLabel value="Telefono"/>
+                        <p:inputText id="txtTelefono" value="#{bkn_Inicio.telefono}"/>
+                        <p:outputLabel value="Direccion"/>
+                        <p:inputText id="txtDireccion" value="#{bkn_Inicio.direccion}"/>
+                    </p:panelGrid>   
+                    <div>
+                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" update="frmDatos, txtRpt, form2"/>
+                    </div>
+                </h:form>
+                <h:outputText id="txtRpt" value="#{bkn_Inicio.respuesta}"/>
+            </div>
+
+            <div id="tabla" class="mostraEstudiante">
+                <h1  class="contenedorFormulario"> <p:outputLabel value="ESTUDIANTES" /></h1>
+
+                <h:form id="form2">
+
+                    <p:toolbar>
+
+                    </p:toolbar>
+                    <p:dataTable  id="tblDatos" widgetVar="dtProducts" var="estudiante" value="#{bkn_Inicio.estudiantes}"
+                                  reflow="true" styleClass="products-table" selection="#{bkn_Inicio.estudiantes2}"
+                                  rowKey="#{product.id_estudiante}" paginator="true" rows="15" rowSelectMode="add" paginatorPosition="top"
+                                  editable="true">
+                        <p:ajax event="rowEdit" listener="#{bkn_Inicio.editarEstudiante}" update="tblDatos"/>
+                        <p:ajax event="rowSelect"  />
+                        <p:ajax event="rowUnselect"  />
+                        <p:ajax event="rowSelectCheckbox" />
+                        <p:ajax event="rowUnselectCheckbox" />
+                        <p:ajax event="toggleSelect" />
+
+                        <p:column headerText="ID" sortBy="#{estudiante.id_estudiante}" filterBy="#{estudiante.id_estudiante}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.id_estudiante}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput" value="#{estudiante.id_estudiante}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Identificacion" sortBy="#{estudiante.identificacion}" filterBy="#{estudiante.identificacion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.identificacion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtIdentificacion" value="#{estudiante.identificacion}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Nombre" sortBy="#{estudiante.nombre_estudiante}" filterBy="#{estudiante.nombre_estudiante}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.nombre_estudiante}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtNombre" value="#{estudiante.nombre_estudiante}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Correo" sortBy="#{estudiante.correo}" filterBy="#{estudiante.correo}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.correo}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtCorreo" value="#{estudiante.correo}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Telefono" sortBy="#{estudiante.telefono}" filterBy="#{estudiante.telefono}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.telefono}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtTelefono" value="#{estudiante.telefono}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Direccion" sortBy="#{estudiante.direccion}" filterBy="#{estudiante.direccion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.direccion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtDireccion" value="#{estudiante.direccion}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Estado" sortBy="#{estudiante.estado}" filterBy="#{estudiante.estado}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.estado}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtEstado" value="#{estudiante.estado}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:6rem">
+                            <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Guardar"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>
