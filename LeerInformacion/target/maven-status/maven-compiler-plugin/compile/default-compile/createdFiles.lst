@@ -1,0 +1,9 @@
+umg\edu\gt\Datos\Libro.class
+umg\edu\gt\Consultas\Hibernate.class
+umg\edu\gt\Datos\Estudiante.class
+umg\edu\gt\leerinformacion\LeerInformacionResource.class
+umg\edu\gt\Datos\Transaccion.class
+umg\edu\gt\Datos\TipoLibro.class
+umg\edu\gt\Datos\Autor.class
+umg\edu\gt\Datos\Usuario.class
+umg\edu\gt\leerinformacion\ApplicationConfig.class
