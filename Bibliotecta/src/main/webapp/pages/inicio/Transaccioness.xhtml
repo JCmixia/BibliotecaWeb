@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Estudiantes</title>
+        <!-- <h:outputScript name="script.js" library="js"/>
+         <h:outputStylesheet name="default.css" library="css"/> 
+         <h:outputStylesheet name="theme.css" library="css"/>
+        -->
+    </h:head>
+
+    <h:body>
+        <style>
+            body{
+                margin: 0;
+                background: #F5FCCD;
+                background-repeat: no-repeat;
+
+            }
+            body .ui-inputfield {
+                border: none;
+                border-bottom: solid black 2px;
+                width: 500px;
+                border-radius: 0;
+            }
+            .formulario{
+                display : none;
+                text-align: -webkit-center;
+                width: 90%;
+                border: solid #495057 1px;
+                padding: 50px;
+            }
+            .mostrarDatos{
+                display : block;
+            }
+            body .ui-panelgrid  .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 0rem;
+            }
+            .ui-button-text{
+                background-color: #256D85;
+                border: solid #fff 1px;
+            }
+            .ui-button-text:hover{
+                background-color: #2B4865;
+            }
+            body .ui-widget {
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                font-size: 1rem;
+                text-decoration: none;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            user agent stylesheet
+            label {
+                cursor: default;
+            }
+            body .ui-panelgrid .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 1rem;
+            }
+            .value {
+                font-weight: bold;
+            }
+            div.color{
+                background-color: #002B5B;
+                height: 40px;
+            }
+            .flotarIzquierda{
+                float: left;
+            }
+            .flotarDerecha{
+                float: right;
+            }
+            .botones{
+                background-color: #256D85;
+                color: white;
+                height: 40px;
+                margin: 0;
+                border: solid black 2px;
+                text-align: center;
+            }
+            .botones:hover{
+                background-color: #2B4865;
+                color: white;
+            }
+            .contenedorFormulario{
+                text-align: center;
+            }
+            .centrarInicio{
+                text-align: -webkit-center;
+            }
+        </style>
+        <script>
+            function mostrarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "block";
+            }
+
+            function ocultarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "none";
+            }
+
+            function mostrarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "block";
+            }
+
+            function ocultarTbl()
+            {
+                var x = document.getElementById("tabla");
+                x.style.display = "none";
+            }
+
+            function showManageProductDialog() {
+                PF('manageProductDialog').show();
+            }
+        </script>
+
+        <div class="color">
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnMostrar" value="Mostrar Transacciones" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt, form2"/>
+            </div >
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnAgregar" value="Agregar Transaccion" onclick="mostrarFrm(), ocultarTbl()"/>
+            </div>
+            <div class="flotarDerecha">
+                <p:commandButton id="btnInicio" value="Inicio" action="bienvenida.xhtml"/>
+            </div>
+        </div>
+        <div class="centrarInicio">
+            <br></br>
+            <div id="formulario" class="formulario">
+                <h1 class="contenedorFormulario" > <p:outputLabel value="REGISTRAR NUEVA TRANSACCION" class="contenedorFormulario"/></h1>
+                <h:form id="frmDatos">
+                    <p:panelGrid style="width: 800px" columns="2">    
+                        <p:outputLabel value="Usuario"/>
+                        <p:inputText id="txtTitulo" value="#{bkn_Inicio.usuarios}"/>
+                        <p:outputLabel value="Libro"/>
+                        <p:cascadeSelect  value="#{bkn_Inicio.libros}" style="min-width: 14rem" placeholder="Seleccione categoria">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItems value="#{bkn_Inicio.estados}"/>
+                        </p:cascadeSelect>
+                        <p:outputLabel value="Autor"/>
+                        <p:cascadeSelect  value="#{bkn_Inicio.autores}" style="min-width: 14rem" placeholder="Seleccione autor">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItems value="#{bkn_Inicio.autores}"/>
+                        </p:cascadeSelect>
+                        <p:outputLabel value="Transaccion" />
+                        <p:inputText id="txtTransaccion" value="#{bkn_Inicio.transacciones}"/>
+                        <p:outputLabel value="Fecha de Prestamo"/>
+                        <p:calendar id="dateFechaPrestamo" value="#{bkn_Inicio.fecha_prestamo}" pattern="dd/MM/yyyy"/>
+                        <p:outputLabel value="Fecha de Devolucion"/>
+                        <p:calendar id="dateFechaDevolucion" value="#{bkn_Inicio.fecha_devolucion}" pattern="dd/MM/yyyy"/>
+                    </p:panelGrid>  
+                    <div>
+                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarLibro}" update="frmDatos, txtRpt, form2"/>
+                    </div>
+                </h:form>
+                <h:outputText id="txtRpt" value="#{bkn_Inicio.respuesta}"/>
+            </div>
+
+            <div id="tabla" class="mostrarDatos">
+                <h1 class="contenedorFormulario"> <p:outputLabel value="TRANSACCIONES" /></h1>
+
+                <h:form id="form2">
+
+                    <p:toolbar>
+
+                    </p:toolbar>
+                    <p:dataTable  id="tblDatos" widgetVar="dtProducts" var="transaccion" value="#{bkn_Inicio.transacciones}"
+                                  reflow="true" styleClass="products-table" 
+                                  rowKey="#{transaccion.id_transaccion}" paginator="true" rows="15" rowSelectMode="add" paginatorPosition="top"
+                                  editable="true">
+                        <p:ajax event="rowEdit" listener="#{bkn_Inicio.agregarTransaccion()}" update="tblDatos"/>
+
+                        <p:column headerText="ID" sortBy="#{transaccion.id_libro}" filterBy="#{libro.id_libro}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{libro.id_libro}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput" value="#{libro.id_libro}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Título" sortBy="#{libro.titulo}" filterBy="#{libro.titulo}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{libro.titulo}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtIdentificacion" value="#{libro.titulo}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Categoria" sortBy="#{libro.categoria}" filterBy="#{libro.categoria}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{libro.categoria}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtNombre" value="#{libro.categoria}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Autor" sortBy="#{libro.id_autor}" filterBy="#{libro.id_autor}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{libro.id_autor}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtCorreo" value="#{libro.id_autor}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Transaccion" sortBy="#{transaccion.tipo_transaccion}" filterBy="#{transaccion.tipo_transaccion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{transaccion.tipo_transaccion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtTransaccion" value="#{transaccion.tipo_transaccion}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Fecha Prestamo" sortBy="#{transaccion.fecha_prestamo}" filterBy="#{transaccion.fecha_prestamo}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{transaccion.fecha_prestamo}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtprestamo" value="#{transaccion.fecha_prestamo}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Fecha Devolucion" sortBy="#{transaccion.fecha_devolucion}" filterBy="#{transaccion.fecha_devolucion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{transaccion.fecha_devolucion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtEstado" value="#{transaccion.fecha_devolucion}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:6rem">
+                            <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Guardar"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>

@@ -230,7 +230,7 @@ public class biblioteca {
 
     public void listarEstudiantes() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8080/LeerInformacion/webresources/leer/consultarEstudiantes";
+        String url = "http://localhost:8090/LeerInformacion/webresources/leer/consultarEstudiantes";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -283,7 +283,7 @@ public class biblioteca {
         if (!identificacion.isEmpty() && !nombre_estudiante.isEmpty() && !correo.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty()) {
             id_municipio = Long.parseLong("1");
             Estudiante estudiante = new Estudiante(identificacion, nombre_estudiante, correo, telefono, direccion, id_municipio, "Activo");
-            String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarEstudiante";
+            String url = "http://localhost:8090/InsertarDatos/webresources/Insertar/ingresarEstudiante";
 
             HttpClient client = HttpClient.newHttpClient();
 
@@ -343,7 +343,7 @@ public class biblioteca {
 
     public void listarLibros() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8080/LeerInformacion/webresources/leer/consultarLibros";
+        String url = "http://localhost:8090/LeerInformacion/webresources/leer/consultarLibros";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -377,7 +377,7 @@ public class biblioteca {
 
         System.out.println("Ingresando al metodo agregar Libro");
 
-        String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarLibro";
+        String url = "http://localhost:8090/InsertarDatos/webresources/Insertar/ingresarLibro";
 
         HttpClient client = HttpClient.newHttpClient();
         
@@ -425,7 +425,7 @@ public class biblioteca {
 
     public void listarAutores() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8080/LeerInformacion/webresources/leer/consultarAutores";
+        String url = "http://localhost:8090/LeerInformacion/webresources/leer/consultarAutores";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -449,7 +449,7 @@ public class biblioteca {
     public void agregarAutor() throws IOException, InterruptedException {
 
         Autor autor = new Autor(nombre_autor.trim());
-        String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarAutor";
+        String url = "http://localhost:8090/InsertarDatos/webresources/Insertar/ingresarAutor";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -481,7 +481,7 @@ public class biblioteca {
 
     public void listarTransacciones() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8080/LeerInformacion/webresources/leer/consultarTransacciones";
+        String url = "http://localhost:8090/LeerInformacion/webresources/leer/consultarTransacciones";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -506,7 +506,7 @@ public class biblioteca {
 
         Transaccion transaccion = new Transaccion(id_usuario, libro_id, getTipo_transaccion(), fecha_prestamo.trim(), fecha_devolucion.trim());
 
-        String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarTransaccion";
+        String url = "http://localhost:8090/InsertarDatos/webresources/Insertar/ingresarTransaccion";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -540,7 +540,7 @@ public class biblioteca {
 
     public void listarCategorias() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8080/LeerInformacion/webresources/leer/consultarCategorias";
+        String url = "http://localhost:8090/LeerInformacion/webresources/leer/consultarCategorias";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -564,7 +564,7 @@ public class biblioteca {
     public void agregarTipo() throws IOException, InterruptedException {
 
         Categoria categoria = new Categoria(descripcion.trim());
-        String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarTipoLibro";
+        String url = "http://localhost:8090/InsertarDatos/webresources/Insertar/ingresarTipoLibro";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -592,7 +592,7 @@ public class biblioteca {
 
     public void listrarUsuarios() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8080/LeerInformacion/webresources/leer/consultarUser";
+        String url = "http://localhost:8090/LeerInformacion/webresources/leer/consultarUser";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -618,7 +618,7 @@ public class biblioteca {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         if (compararDatos() == true) {
 
-            externalContext.redirect("http://localhost:8080/Bibliotecta/pages/inicio/bienvenida.xhtml");
+            externalContext.redirect("http://localhost:8090/Bibliotecta/pages/inicio/bienvenida.xhtml");
             respuesta = "Bienvenido";
         } else {
             respuesta = "Credenciales incorectas";
@@ -647,7 +647,7 @@ public class biblioteca {
     public void actualizarEstudiante() throws IOException, InterruptedException {
         Estudiante autor = new Estudiante(id_estudiante, identificacion, nombre_estudiante, correo, telefono, direccion, id_municipio, estadoEstudiante);
 
-        String url = "http://localhost:8080/actualizar/webresources/actualizar/actualizarEstudiante";
+        String url = "http://localhost:8090/actualizar/webresources/actualizar/actualizarEstudiante";
 
         HttpClient client = HttpClient.newHttpClient();
 
