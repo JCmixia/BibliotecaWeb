@@ -17,72 +17,193 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
     </h:head>
 
     <h:body>
+
         <style>
+            body{
+                margin: 0;
+                background: #F5FCCD;
+                background-repeat: no-repeat;
+
+            }
+            body .ui-inputfield {
+                border: none;
+                border-bottom: solid black 2px;
+                width: 500px;
+                border-radius: 0;
+            }
+            .agregarEstudiante{
+                display : none;
+                text-align: -webkit-center;
+                width: 90%;
+                border: solid #495057 1px;
+                padding: 50px;
+            }
+            .mostrarEstudiante{
+                display : block;
+            }
             body .ui-panelgrid  .ui-panelgrid-cell {
                 border: 1px solid #dee2e6;
                 background: #fff;
                 color: #495057;
                 padding: 0rem;
             }
+            .ui-button-text{
+                background-color: #256D85;
+                border: solid #fff 1px;
+            }
+            .ui-button-text:hover{
+                background-color: #2B4865;
+            }
+            body .ui-widget {
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                font-size: 1rem;
+                text-decoration: none;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            user agent stylesheet
+            label {
+                cursor: default;
+            }
+            body .ui-panelgrid .ui-panelgrid-cell {
+                border: 1px solid #dee2e6;
+                background: #fff;
+                color: #495057;
+                padding: 1rem;
+            }
+            .value {
+                font-weight: bold;
+            }
+            div.color{
+                background-color: #002B5B;
+                height: 40px;
+            }
+            .flotarIzquierda{
+                float: left;
+            }
+            .flotarDerecha{
+                float: right;
+            }
+            .botones{
+                background-color: #256D85;
+                color: white;
+                height: 40px;
+                margin: 0;
+                border: solid black 2px;
+                text-align: center;
+            }
+            .botones:hover{
+                background-color: #2B4865;
+                color: white;
+            }
+            .contenedorFormulario{
+                text-align: center;
+            }
+            .centrarInicio{
+                text-align: -webkit-center;
+            }
         </style>
-        <h1> <p:outputLabel value="libros"    class="contenedorFormulario"/></h1>
-        <br></br>
-        <div class="contenedorFormulario">
-            <h:form id="form1">
-                <p:panelGrid columns="2">   
-                    <p:outputLabel value="Tipo"/>
-                    <p:inputText id="txtTipo" value="#{bkn_Inicio.categori}"/>
-                    <p:outputLabel value="Autor"/>
-                    <p:inputText id="txtAutor" value="#{bkn_Inicio.id_autor}"/>
-                    <p:outputLabel value="Titulo"/>
-                    <p:inputText id="txtTitulo" value="#{bkn_Inicio.titulo}"/>
-                    <p:outputLabel value="Idioma"/>
-                    <p:inputText id="txtIdioma" value="#{bkn_Inicio.idioma}"/>
-                    <p:outputLabel value="Edicion" />
-                    <p:inputText id="txtEdicion" value="#{bkn_Inicio.edicion}"/>
-                    <p:outputLabel value="Fecha de edicion"/>
-                    <p:calendar id="dateFechaEdicion" value="#{bkn_Inicio.fecha_edicion}" pattern="dd/MM/yyyy"/>
-                    <p:outputLabel value="Stock"/>
-                    <p:inputText id="txtStock" value="#{bkn_Inicio.stock}"/>
-                    <p:outputLabel value="Estado"/>
-                    <p:cascadeSelect value="#{bkn_Inicio.estadoLibro}" style="min-width: 14rem" placeholder="Seleccione">
-                        <p:ajax event="itemSelect"/>
-                        <f:selectItems value="#{bkn_Inicio.estados}"/>
-                    </p:cascadeSelect>
+        <script>
+            function mostrarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "block";
+            }
 
-                    <p:outputLabel value="Fecha de ingeso"/>
-                     <p:calendar id="dateFechaIngreso" value="#{bkn_Inicio.fecha_ingreso}" pattern="dd/MM/yyyy"/>
-                    <p:commandButton id="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarLibro}" update="form1"/>
-                    <p:commandButton id="btnActualizar" value="Modificar"/>
-                    <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
-                </p:panelGrid>
-            </h:form>
+            function ocultarFrm() {
+                var x = document.getElementById("formulario");
+                x.style.display = "none";
+            }
+
+            function mostrarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "block";
+            }
+
+            function ocultarTbl() {
+                var x = document.getElementById("tabla");
+                x.style.display = "none";
+            }
+
+            function showManageProductDialog() {
+                PF('manageProductDialog').show();
+            }
+        </script>
+        <div class="color">
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnEstudiantes" value="Mostrar Libros" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}"/>
+            </div >
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnAgregar" value="Agregar Libro" onclick="mostrarFrm(), ocultarTbl()"/>
+            </div>
+            <div class="flotarDerecha">
+                <p:commandButton id="btnInicio" value="Inicio" action="bienvenida.xhtml"/>
+            </div>
         </div>
-        <p:dataTable var="item" value="#{bkn_Inicio.libros}">
-            <p:column headerText="Id">
-                <h:outputText value="#{item.id_libro}" />
-            </p:column>
-             <p:column headerText="Titulo">
-                <h:outputText value="#{item.titulo}" />
-            </p:column>
-            <p:column headerText="Categoria">
-                <h:outputText value="#{item.categoria}" />
-            </p:column>
-            <p:column headerText="Autor">
-                <h:outputText value="#{item.id_autor}" />
-            </p:column>
-            <p:column headerText="Edicion">
-                <h:outputText value="#{item.edicion}" />
-            </p:column>
-            <p:column headerText="Fecha edicion">
-                <h:outputText value="#{item.fecha_edicion}" />
-            </p:column>
-            <p:column headerText="Fecha ingreso">
-                <h:outputText value="#{item.fecha_ingreso}" />
-            </p:column>
-            <p:column headerText="Estado">
-                <h:outputText value="#{item.estado}" />
-            </p:column>
-        </p:dataTable>
+
+        <div class="centrarInicio">
+            
+            <br></br>
+            <div id="formulario" class="agregarEstudiante">
+                <h:form id="form1">
+                    <p:panelGrid columns="2">   
+                        <p:outputLabel value="Tipo"/>
+                        <p:inputText id="txtTipo" value="#{bkn_Inicio.categori}"/>
+                        <p:outputLabel value="Autor"/>
+                        <p:inputText id="txtAutor" value="#{bkn_Inicio.id_autor}"/>
+                        <p:outputLabel value="Titulo"/>
+                        <p:inputText id="txtTitulo" value="#{bkn_Inicio.titulo}"/>
+                        <p:outputLabel value="Idioma"/>
+                        <p:inputText id="txtIdioma" value="#{bkn_Inicio.idioma}"/>
+                        <p:outputLabel value="Edicion" />
+                        <p:inputText id="txtEdicion" value="#{bkn_Inicio.edicion}"/>
+                        <p:outputLabel value="Fecha de edicion"/>
+                        <p:calendar id="dateFechaEdicion" value="#{bkn_Inicio.fecha_edicion}" pattern="MM/dd/yyyy"/>
+                        <p:outputLabel value="Stock"/>
+                        <p:inputText id="txtStock" value="#{bkn_Inicio.stock}"/>
+                        <p:outputLabel value="Estado"/>
+                        <p:cascadeSelect value="#{bkn_Inicio.estadoLibro}" style="min-width: 14rem" placeholder="Seleccione">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItems value="#{bkn_Inicio.estados}"/>
+                        </p:cascadeSelect>
+
+                        <p:outputLabel value="Fecha de ingeso"/>
+                        <p:calendar id="dateFechaIngreso" value="#{bkn_Inicio.fecha_ingreso}" pattern="dd/MM/yyyy"/>
+                        <p:commandButton id="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarLibro}" update="form1"/>
+                        <p:commandButton id="btnActualizar" value="Modificar"/>
+                        <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+                    </p:panelGrid>
+                </h:form>
+            </div>
+            <div id="tabla" class="mostraEstudiante">
+                <h1  class="contenedorFormulario"> <p:outputLabel value="LIBROS" /></h1>
+                <p:dataTable var="item" value="#{bkn_Inicio.libros}">
+                    <p:column headerText="Id">
+                        <h:outputText value="#{item.id_libro}" />
+                    </p:column>
+                    <p:column headerText="Titulo">
+                        <h:outputText value="#{item.titulo}" />
+                    </p:column>
+                    <p:column headerText="Categoria">
+                        <h:outputText value="#{item.categoria}" />
+                    </p:column>
+                    <p:column headerText="Autor">
+                        <h:outputText value="#{item.id_autor}" />
+                    </p:column>
+                    <p:column headerText="Edicion">
+                        <h:outputText value="#{item.edicion}" />
+                    </p:column>
+                    <p:column headerText="Fecha edicion">
+                        <h:outputText value="#{item.fecha_edicion}" />
+                    </p:column>
+                    <p:column headerText="Fecha ingreso">
+                        <h:outputText value="#{item.fecha_ingreso}" />
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{item.estado}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
     </h:body>
 </html>

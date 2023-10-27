@@ -35,6 +35,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 text-align: -webkit-center;
                 width: 90%;
                 border: solid #495057 1px;
+                padding: 50px;
             }
             .mostrarEstudiante{
                 display : block;
@@ -77,6 +78,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 background-color: #002B5B;
                 height: 40px;
             }
+            .flotarIzquierda{
+                float: left;
+            }
+            .flotarDerecha{
+                float: right;
+            }
             .botones{
                 background-color: #256D85;
                 color: white;
@@ -93,7 +100,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 text-align: center;
             }
             .centrarInicio{
-                text-align: -webkit-center;     
+                text-align: -webkit-center;
             }
         </style>
         <script>
@@ -112,16 +119,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 x.style.display = "block";
             }
 
-            function ocultarTbl() {
+            function ocultarTbl() 
+            {
                 var x = document.getElementById("tabla");
                 x.style.display = "none";
+            }
+
+            function showManageProductDialog() {
+                PF('manageProductDialog').show();
             }
         </script>
 
         <div class="color">
-            <p:commandButton id="btnEstudiantes" value="Mostrar Estudiantes" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt"/>
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnEstudiantes" value="Mostrar Estudiantes" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt, form2"/>
+            </div >
+            <div class="flotarIzquierda">
             <p:commandButton id="btnAgregar" value="Agregar Estudiante" onclick="mostrarFrm(), ocultarTbl()"/>
-            <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+            </div>
+            <div class="flotarDerecha">
+                <p:commandButton id="btnInicio" value="Inicio" action="bienvenida.xhtml"/>
+            </div>
         </div>
         <div class="centrarInicio">
             <br></br>
@@ -141,35 +159,107 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                         <p:inputText id="txtDireccion" value="#{bkn_Inicio.direccion}"/>
                     </p:panelGrid>   
                     <div>
-                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" update="tblDatos, frmDatos, txtRpt"/>
+                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" update="frmDatos, txtRpt, form2"/>
                     </div>
                 </h:form>
                 <h:outputText id="txtRpt" value="#{bkn_Inicio.respuesta}"/>
             </div>
+
             <div id="tabla" class="mostraEstudiante">
-                <h1  class="contenedorFormulario"> <p:outputLabel value="Estudiantes" /></h1>
+                <h1  class="contenedorFormulario"> <p:outputLabel value="ESTUDIANTES" /></h1>
 
-                <p:dataTable id="tblDatos" var="item" value="#{bkn_Inicio.estudiantes}">
-                    <p:column headerText="Id">
-                        <h:outputText value="#{item.id_estudiante}" />
-                    </p:column>
-                    <p:column headerText="Identificacion">
-                        <h:outputText value="#{item.identificacion}" />
-                    </p:column>
-                    <p:column headerText="Direccion">
-                        <h:outputText value="#{item.direccion}" />
-                    </p:column>
+                <h:form id="form2">
 
-                    <p:column headerText="Correo">
-                        <h:outputText value="#{item.correo}" />
-                    </p:column>
-                    <p:column headerText="Telefono">
-                        <h:outputText value="#{item.telefono}" />
-                    </p:column>
-                    <p:column headerText="Estado">
-                        <h:outputText value="#{item.estado}" />
-                    </p:column>
-                </p:dataTable>
+                    <p:toolbar>
+
+                    </p:toolbar>
+                    <p:dataTable  id="tblDatos" widgetVar="dtProducts" var="estudiante" value="#{bkn_Inicio.estudiantes}"
+                                  reflow="true" styleClass="products-table" selection="#{bkn_Inicio.estudiantes2}"
+                                  rowKey="#{product.id_estudiante}" paginator="true" rows="15" rowSelectMode="add" paginatorPosition="top"
+                                  editable="true">
+                        <p:ajax event="rowEdit" listener="#{bkn_Inicio.editarEstudiante}" update="tblDatos"/>
+                        <p:ajax event="rowSelect"  />
+                        <p:ajax event="rowUnselect"  />
+                        <p:ajax event="rowSelectCheckbox" />
+                        <p:ajax event="rowUnselectCheckbox" />
+                        <p:ajax event="toggleSelect" />
+
+                        <p:column headerText="ID" sortBy="#{estudiante.id_estudiante}" filterBy="#{estudiante.id_estudiante}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.id_estudiante}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="modelInput" value="#{estudiante.id_estudiante}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Identificacion" sortBy="#{estudiante.identificacion}" filterBy="#{estudiante.identificacion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.identificacion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtIdentificacion" value="#{estudiante.identificacion}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Nombre" sortBy="#{estudiante.nombre_estudiante}" filterBy="#{estudiante.nombre_estudiante}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.nombre_estudiante}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtNombre" value="#{estudiante.nombre_estudiante}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Correo" sortBy="#{estudiante.correo}" filterBy="#{estudiante.correo}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.correo}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtCorreo" value="#{estudiante.correo}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Telefono" sortBy="#{estudiante.telefono}" filterBy="#{estudiante.telefono}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.telefono}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtTelefono" value="#{estudiante.telefono}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Direccion" sortBy="#{estudiante.direccion}" filterBy="#{estudiante.direccion}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.direccion}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtDireccion" value="#{estudiante.direccion}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Estado" sortBy="#{estudiante.estado}" filterBy="#{estudiante.estado}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{estudiante.estado}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="txtEstado" value="#{estudiante.estado}" style="width:100%"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column style="width:6rem">
+                            <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Guardar"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
             </div>
         </div>
     </h:body>

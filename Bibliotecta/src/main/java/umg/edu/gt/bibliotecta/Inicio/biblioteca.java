@@ -16,8 +16,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -35,6 +38,7 @@ import umg.edu.gt.biblioteca.Datos.Categoria;
 import umg.edu.gt.biblioteca.Datos.Transaccion;
 import umg.edu.gt.biblioteca.Datos.Usuario;
 import umg.edu.gt.biblioteca.Datos.Estudiante;
+import java.util.Date;
 
 /**
  *
@@ -43,6 +47,34 @@ import umg.edu.gt.biblioteca.Datos.Estudiante;
 @ManagedBean(name = "bkn_Inicio")
 @ViewScoped
 public class biblioteca {
+
+    /**
+     * @return the fechaEdicion
+     */
+    public Date getFechaEdicion() {
+        return fechaEdicion;
+    }
+
+    /**
+     * @param fechaEdicion the fechaEdicion to set
+     */
+    public void setFechaEdicion(Date fechaEdicion) {
+        this.fechaEdicion = fechaEdicion;
+    }
+
+    /**
+     * @return the fechaIngreso
+     */
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    /**
+     * @param fechaIngreso the fechaIngreso to set
+     */
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
 
     /**
      * @return the id_tipo_cat
@@ -131,6 +163,9 @@ public class biblioteca {
     private Long stock;
     private String estadoLibro;
 
+    private Date fechaEdicion;
+    private Date fechaIngreso;
+
     //datos autor
     private Long id_Autor;
     private String nombre_autor;
@@ -180,8 +215,8 @@ public class biblioteca {
         }
 
         // Agregar elementos a la lista
-        estados.add("prestado");
-        estados.add("devuelto");
+        estados.add("Prestado");
+        estados.add("Disponible");
 
         for (Categoria tipo : categoria) {
             nombresEstados.add(tipo.getDescripcion());
@@ -245,7 +280,7 @@ public class biblioteca {
 
     public void agregarEstudiante() throws IOException, InterruptedException {
 
-        if (identificacion != null && !nombre_estudiante.isEmpty() && !correo.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty()){
+        if (!identificacion.isEmpty() && !nombre_estudiante.isEmpty() && !correo.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty()) {
             id_municipio = Long.parseLong("1");
             Estudiante estudiante = new Estudiante(identificacion, nombre_estudiante, correo, telefono, direccion, id_municipio, "Activo");
             String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarEstudiante";
@@ -281,10 +316,10 @@ public class biblioteca {
             setEstadoEstudiante(" ");
             setCorreo(" ");
 
-        }else{
-            respuesta = "Por favor llene todos los campos";
+        } else {
+            respuesta = "Por favor complete todos los campos";
         }
-        
+
     }
 
     public void editarEstudiante(RowEditEvent event) {
@@ -329,34 +364,50 @@ public class biblioteca {
         setLibros(libros);
     }
 
-    public void agregarLibro() throws IOException, InterruptedException {
+    public void agregarLibro() {
 
-        Libro libro = new Libro(titulo.trim(), categori.trim(), id_autor, edicion.trim(), fecha_edicion.trim(), fecha_ingreso.trim(), estadoLibro.trim());
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yy");
+        
+        fecha_edicion = formatoFecha.format(fechaEdicion);
+        fecha_ingreso = formatoFecha.format(fechaIngreso);
+        
+        
+        
+        Libro libro = new Libro(titulo.trim(), categori.trim(), id_autor, edicion.trim(), fecha_edicion.trim(), fecha_ingreso.trim(), "Disponible");
+
+        System.out.println("Ingresando al metodo agregar Libro");
 
         String url = "http://localhost:8080/InsertarDatos/webresources/Insertar/ingresarLibro";
 
         HttpClient client = HttpClient.newHttpClient();
-
+        
         Gson gson = new Gson();
         String json = gson.toJson(libro);
 
         System.out.println(json);
+        
+        try {
+            
+            // Crear una solicitud POST con parámetros
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
 
-        // Crear una solicitud POST con parámetros
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
+            // Enviar la solicitud y obtener la respuesta
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            // Imprimir el cuerpo de la respuesta
 
-        // Enviar la solicitud y obtener la respuesta
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        // Imprimir el cuerpo de la respuesta
+            listarLibros();
 
-        listarLibros();
-
-        System.out.println("respuesta: " + response.body());
-
+            System.out.println("respuesta: " + response.body());
+            
+            respuesta = response.body();
+        } catch (Exception e) {
+            System.out.println("Error al agregar Libro" + e.toString());
+        }
+        
         setId_libro(null);
         setCategori(null);
         setId_autor(null);
@@ -367,7 +418,9 @@ public class biblioteca {
         setFecha_ingreso(" ");
         setStock(null);
         setEstadoLibro(" ");
-
+        fechaEdicion = null;
+        fechaIngreso =null;
+       
     }
 
     public void listarAutores() throws IOException, InterruptedException {
@@ -683,6 +736,10 @@ public class biblioteca {
 
         setId_tipo_cat(null);
         setDescripcion_cat("");
+    }
+
+    public void editarLibro() {
+
     }
 
     public void limpiarDatos() {

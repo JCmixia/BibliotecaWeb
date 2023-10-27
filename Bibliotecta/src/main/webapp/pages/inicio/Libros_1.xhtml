@@ -30,13 +30,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 width: 500px;
                 border-radius: 0;
             }
-            .agregarEstudiante{
+            .formulario{
                 display : none;
                 text-align: -webkit-center;
                 width: 90%;
                 border: solid #495057 1px;
+                padding: 50px;
             }
-            .mostrarEstudiante{
+            .mostrarDatos{
                 display : block;
             }
             body .ui-panelgrid  .ui-panelgrid-cell {
@@ -77,6 +78,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 background-color: #002B5B;
                 height: 40px;
             }
+            .flotarIzquierda{
+                float: left;
+            }
+            .flotarDerecha{
+                float: right;
+            }
             .botones{
                 background-color: #256D85;
                 color: white;
@@ -112,7 +119,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                 x.style.display = "block";
             }
 
-            function ocultarTbl() {
+            function ocultarTbl()
+            {
                 var x = document.getElementById("tabla");
                 x.style.display = "none";
             }
@@ -123,120 +131,129 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
         </script>
 
         <div class="color">
-            <p:commandButton id="btnEstudiantes" value="Mostrar Estudiantes" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt, form2"/>
-            <p:commandButton id="btnAgregar" value="Agregar Estudiante" onclick="mostrarFrm(), ocultarTbl()"/>
-            <p:commandButton id="btnInicio" value="Regresar" action="bienvenida.xhtml"/>
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnMostrar" value="Mostrar Libros" onclick="mostrarTbl(), ocultarFrm()" action="#{bkn_Inicio.limpiarDatos}" update="txtRpt, form2"/>
+            </div >
+            <div class="flotarIzquierda">
+                <p:commandButton id="btnAgregar" value="Agregar Nuevo Libro" onclick="mostrarFrm(), ocultarTbl()"/>
+            </div>
+            <div class="flotarDerecha">
+                <p:commandButton id="btnInicio" value="Inicio" action="bienvenida.xhtml"/>
+            </div>
         </div>
         <div class="centrarInicio">
             <br></br>
-            <div id="formulario" class="agregarEstudiante">
-                <h1 class="contenedorFormulario" > <p:outputLabel value="REGISTRAR NUEVO ESTUDIANTE" class="contenedorFormulario"/></h1>
+            <div id="formulario" class="formulario">
+                <h1 class="contenedorFormulario" > <p:outputLabel value="REGISTRAR NUEVO LIBRO" class="contenedorFormulario"/></h1>
                 <h:form id="frmDatos">
-                    <p:panelGrid style="width: 800px" columns="2">   
-                        <p:outputLabel value="Identificacion"/>
-                        <p:inputText id="txtIdentificacion" value="#{bkn_Inicio.identificacion}"/>
-                        <p:outputLabel value="Nombre"/>
-                        <p:inputText id="txtNombre" value="#{bkn_Inicio.nombre_estudiante}"/>
-                        <p:outputLabel value="Correo"/>
-                        <p:inputText id="txtCorreo" value="#{bkn_Inicio.correo}"/>
-                        <p:outputLabel value="Telefono"/>
-                        <p:inputText id="txtTelefono" value="#{bkn_Inicio.telefono}"/>
-                        <p:outputLabel value="Direccion"/>
-                        <p:inputText id="txtDireccion" value="#{bkn_Inicio.direccion}"/>
-                    </p:panelGrid>   
+                    <p:panelGrid style="width: 800px" columns="2">    
+                        <p:outputLabel value="Titulo"/>
+                        <p:inputText id="txtTitulo" value="#{bkn_Inicio.titulo}"/>
+                        <p:outputLabel value="Categoria"/>
+                        <p:cascadeSelect  value="#{bkn_Inicio.categori}" style="min-width: 14rem" placeholder="Seleccione categoria">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItems value="#{bkn_Inicio.estados}"/>
+                        </p:cascadeSelect>
+                        <p:outputLabel value="Autor"/>
+                        <p:cascadeSelect  value="#{bkn_Inicio.categori}" style="min-width: 14rem" placeholder="Seleccione autor">
+                            <p:ajax event="itemSelect"/>
+                            <f:selectItems value="#{bkn_Inicio.estados}"/>
+                        </p:cascadeSelect>
+                        <p:outputLabel value="Edicion" />
+                        <p:inputText id="txtEdicion" value="#{bkn_Inicio.edicion}"/>
+                        <p:outputLabel value="Fecha de edicion"/>
+                        <p:calendar id="dateFechaEdicion" value="#{bkn_Inicio.fechaEdicion}" pattern="dd/MM/yyyy"/>
+                        <p:outputLabel value="Fecha de ingeso"/>
+                        <p:calendar id="dateFechaIngreso" value="#{bkn_Inicio.fechaIngreso}" pattern="dd/MM/yyyy"/>
+                    </p:panelGrid>  
                     <div>
-                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarEstudiante}" update="frmDatos, txtRpt, form2"/>
+                        <p:commandButton style="width: 800px" id="btnInsertar" class="btnInsertar" value="Agregar" action="#{bkn_Inicio.agregarLibro}" update="frmDatos, txtRpt, form2"/>
                     </div>
                 </h:form>
                 <h:outputText id="txtRpt" value="#{bkn_Inicio.respuesta}"/>
             </div>
 
-            <div id="tabla" class="mostraEstudiante">
-                <h1  class="contenedorFormulario"> <p:outputLabel value="ESTUDIANTES" /></h1>
+            <div id="tabla" class="mostrarDatos">
+                <h1 class="contenedorFormulario"> <p:outputLabel value="LIBROS" /></h1>
 
                 <h:form id="form2">
 
                     <p:toolbar>
 
                     </p:toolbar>
-                    <p:dataTable  id="tblDatos" widgetVar="dtProducts" var="estudiante" value="#{bkn_Inicio.estudiantes}"
-                                  reflow="true" styleClass="products-table" selection="#{bkn_Inicio.estudiantes2}"
-                                  rowKey="#{product.id_estudiante}" paginator="true" rows="15" rowSelectMode="add" paginatorPosition="top"
+                    <p:dataTable  id="tblDatos" widgetVar="dtProducts" var="libro" value="#{bkn_Inicio.libros}"
+                                  reflow="true" styleClass="products-table" 
+                                  rowKey="#{libro.id_libro}" paginator="true" rows="15" rowSelectMode="add" paginatorPosition="top"
                                   editable="true">
-                        <p:ajax event="rowEdit" listener="#{bkn_Inicio.editarEstudiante}" update="tblDatos"/>
-                        <p:ajax event="rowSelect"  />
-                        <p:ajax event="rowUnselect"  />
-                        <p:ajax event="rowSelectCheckbox" />
-                        <p:ajax event="rowUnselectCheckbox" />
-                        <p:ajax event="toggleSelect" />
+                        <p:ajax event="rowEdit" listener="#{bkn_Inicio.editarLibro}" update="tblDatos"/>
 
-                        <p:column headerText="ID" sortBy="#{estudiante.id_estudiante}" filterBy="#{estudiante.id_estudiante}">
+                        <p:column headerText="ID" sortBy="#{libro.id_libro}" filterBy="#{libro.id_libro}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.id_estudiante}"/>
+                                    <h:outputText value="#{libro.id_libro}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="modelInput" value="#{estudiante.id_estudiante}" style="width:100%"/>
+                                    <p:inputText id="modelInput" value="#{libro.id_libro}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Identificacion" sortBy="#{estudiante.identificacion}" filterBy="#{estudiante.identificacion}">
+                        <p:column headerText="Título" sortBy="#{libro.titulo}" filterBy="#{libro.titulo}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.identificacion}"/>
+                                    <h:outputText value="#{libro.titulo}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="txtIdentificacion" value="#{estudiante.identificacion}" style="width:100%"/>
+                                    <p:inputText id="txtIdentificacion" value="#{libro.titulo}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Nombre" sortBy="#{estudiante.nombre_estudiante}" filterBy="#{estudiante.nombre_estudiante}">
+                        <p:column headerText="Categoria" sortBy="#{libro.categoria}" filterBy="#{libro.categoria}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.nombre_estudiante}"/>
+                                    <h:outputText value="#{libro.categoria}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="txtNombre" value="#{estudiante.nombre_estudiante}" style="width:100%"/>
+                                    <p:inputText id="txtNombre" value="#{libro.categoria}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Correo" sortBy="#{estudiante.correo}" filterBy="#{estudiante.correo}">
+                        <p:column headerText="Autor" sortBy="#{libro.id_autor}" filterBy="#{libro.id_autor}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.correo}"/>
+                                    <h:outputText value="#{libro.id_autor}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="txtCorreo" value="#{estudiante.correo}" style="width:100%"/>
+                                    <p:inputText id="txtCorreo" value="#{libro.id_autor}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Telefono" sortBy="#{estudiante.telefono}" filterBy="#{estudiante.telefono}">
+                        <p:column headerText="Edición" sortBy="#{libro.edicion}" filterBy="#{libro.edicion}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.telefono}"/>
+                                    <h:outputText value="#{libro.edicion}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="txtTelefono" value="#{estudiante.telefono}" style="width:100%"/>
+                                    <p:inputText id="txtTelefono" value="#{libro.edicion}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Direccion" sortBy="#{estudiante.direccion}" filterBy="#{estudiante.direccion}">
+                        <p:column headerText="Fecha Edición" sortBy="#{libro.fecha_edicion}" filterBy="#{libro.fecha_edicion}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.direccion}"/>
+                                    <h:outputText value="#{libro.fecha_edicion}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="txtDireccion" value="#{estudiante.direccion}" style="width:100%"/>
+                                    <p:inputText id="txtDireccion" value="#{libro.fecha_edicion}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Estado" sortBy="#{estudiante.estado}" filterBy="#{estudiante.estado}">
+                        <p:column headerText="Fecha Ingreso" sortBy="#{libro.fecha_ingreso}" filterBy="#{libro.fecha_ingreso}">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{estudiante.estado}"/>
+                                    <h:outputText value="#{libro.fecha_ingreso}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="txtEstado" value="#{estudiante.estado}" style="width:100%"/>
+                                    <p:inputText id="txtEstado" value="#{libro.fecha_ingreso}" style="width:100%"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
